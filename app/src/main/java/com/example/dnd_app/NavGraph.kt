@@ -5,13 +5,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.dnd_app.ui.screens.CharDetailScreen
 import com.example.dnd_app.viewmodels.CharactersViewModel
 import com.example.dnd_app.ui.screens.CharactersScreen
+import com.example.dnd_app.viewmodels.CharDetailViewModel
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
-    charactersViewModel: CharactersViewModel
+    charactersViewModel: CharactersViewModel,
+    charDetailViewModel: CharDetailViewModel
 ){
     NavHost(
         navController = navController,
@@ -22,5 +25,12 @@ fun AppNavGraph(
                 navController = navController,
                 viewModel = charactersViewModel)
         }
+
+        composable("CharDetailScreen/{charId}"){ backStackEntry ->
+            val charId = backStackEntry.arguments?.getString("charId")?:""
+            CharDetailScreen(charDetailViewModel,navController, charId)
+        }
     }
+
+
 }
