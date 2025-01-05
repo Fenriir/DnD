@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         charactersViewModel = ViewModelProvider(this)[CharactersViewModel::class.java]
-        charactersViewModel = ViewModelProvider(this)[CharactersViewModel::class.java]
+        charDetailViewModel = ViewModelProvider(this)[CharDetailViewModel::class.java]
 
         enableEdgeToEdge()
         setContent {

@@ -18,4 +18,5 @@ class CharDetailViewModel : ViewModel(){
         setCharId(charId)
         //load from api
     }
+
 }
