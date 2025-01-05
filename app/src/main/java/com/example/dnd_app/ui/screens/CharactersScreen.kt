@@ -107,7 +107,7 @@ fun CharactersScreen(
             ){
                 item{
                     Text(
-                        text = "neco",
+                        text = "Postavy",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -117,7 +117,7 @@ fun CharactersScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 6.dp)
                             .clickable {
-                                navController?.navigate("CharDetailScreen/${character.Name}")
+                                navController?.navigate("CharDetailScreen/${character.CharId}")
                             }
                     ) {
                         Text(
