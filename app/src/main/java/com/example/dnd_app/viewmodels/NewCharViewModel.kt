@@ -53,7 +53,7 @@ class NewCharViewModel: ViewModel(){
                 charactersRepository.postCharacter(newCharacter)
                 refreshCharList()
             } catch (e: Exception) {
-                Log.e("CharactersViewModel", "Error creating character: ${e.message}")
+                Log.e("NewCharViewModel", "Error creating character: ${e.message}")
             }
         }
     }

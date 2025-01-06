@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.dnd_app.ui.components.NavBackButton
 import com.example.dnd_app.viewmodels.EditCharViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +54,13 @@ fun EditCharScreen(
             TopAppBar(
                 title = {
                     Text(text = viewState.value.character?.Name ?: "Character detail")
+                },
+                navigationIcon = {
+                    NavBackButton(
+                        onClick = {
+                            navController?.popBackStack()
+                        }
+                    )
                 },
                 colors = TopAppBarDefaults.topAppBarColors().copy(
                     containerColor = Color.LightGray

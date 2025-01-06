@@ -48,13 +48,13 @@ class CharactersRepository(private val charactersApi: CharactersApi) {
         return characters
     }
 
-    suspend fun updateCharacter(charId: String, updatedCharacter: Characters): Void {
+    suspend fun updateCharacter(charId: String, updatedCharacter: Characters): Unit {
         val result = charactersApi.updateCharacter(charId, updatedCharacter)
         Log.i("CharactersRepository", "updateCharacter for id $charId")
         return result
     }
 
-    suspend fun deleteCharacter(charId: String): Void {
+    suspend fun deleteCharacter(charId: String): Unit {
         val result = charactersApi.deleteCharacter(charId)
         Log.i("CharactersRepository", "deleteCharacter for id $charId")
         return result

@@ -24,16 +24,16 @@ interface CharactersApi {
     @GET("Character/{lvl}")
     suspend fun getLvlBiggerThan(@Path("lvl") lvl: Int): List<Characters>
 
-    @POST
+    @POST("Character")
     suspend fun postCharacter(@Body newCharacter: Characters):Characters
 
     @POST("createMany")
     suspend fun postManyCharacters(@Body newCharacters: List<Characters>): List<Characters>
 
-    @PUT("{charId}")
-    suspend fun updateCharacter(@Path("charId") charId: String, @Body updatedCharacter: Characters): Void
+    @PUT("Character/{charId}")
+    suspend fun updateCharacter(@Path("charId") charId: String, @Body updatedCharacter: Characters): Unit
 
-    @DELETE("{charId}")
-    suspend fun deleteCharacter(@Path("charId") charId: String): Void
+    @DELETE("Character/{charId}")
+    suspend fun deleteCharacter(@Path("charId") charId: String): Unit
 
 }

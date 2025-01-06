@@ -38,7 +38,7 @@ class CharDetailViewModel : ViewModel(){
         viewModelScope.launch {
             _viewState.value = _viewState.value.copy(isLoading = true)
             try {
-                val race = racesRepository.getRace(_viewState.value.raceId)
+                val race = racesRepository.getRace(_viewState.value.character?.RaceId ?:"")
                 _viewState.update{it.copy(race = race)}
             } catch (e: Exception) {
                 Log.e("RaceDetailViewModel", "fetchRaceDetail: ${e.message}")
@@ -54,8 +54,7 @@ class CharDetailViewModel : ViewModel(){
 
     fun setCharId(charId: String) {
         viewModelScope.launch {
-            val character = charactersRepository.getCharacter(charId)
-            _viewState.value = _viewState.value.copy(character = character)
+            _viewState.update { it.copy(charId = charId) }
             fetchCharDetail()
         }
     }

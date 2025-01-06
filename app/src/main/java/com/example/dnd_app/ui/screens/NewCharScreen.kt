@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import com.example.dnd_app.models.Characters
 import com.example.dnd_app.models.HP
 import com.example.dnd_app.models.Mana
-import com.example.dnd_app.viewmodels.CharactersViewModel
 import kotlin.random.Random
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
@@ -45,13 +44,15 @@ fun NewCharScreen(
     var charAktMana by remember { mutableStateOf("") }
     var charMaxMana by remember { mutableStateOf("") }
 
-    fun generateHexId(length: Int = 8): String {
-        val hexChars = "0123456789ABCDEF"
+    fun generateHexId(length: Int = 24): String {
+        require(length % 2 == 0) { "Délka ID musí být sudá." }
+
+        val hexChars = "0123456789abcdef"
         return (1..length)
             .map { hexChars[Random.nextInt(hexChars.length)] }
             .joinToString("")
     }
-    var hexID = generateHexId()
+    var hexID = ""
 
     Scaffold(
         topBar = {
@@ -167,7 +168,7 @@ fun NewCharScreen(
                                 )
                             )
                             viewModel.createCharacter(newCharacter)
-                            navController?.navigateUp() // Návrat na předchozí obrazovku
+                            navController?.navigateUp()
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
