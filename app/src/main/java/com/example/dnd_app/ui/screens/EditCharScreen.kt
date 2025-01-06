@@ -33,22 +33,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.dnd_app.models.Race
-import com.example.dnd_app.ui.components.NavBackButton
-import com.example.dnd_app.viewmodels.CharDetailViewModel
+import com.example.dnd_app.viewmodels.EditCharViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditCharScreen(
     navController: NavController?,
-    charDetailViewModel: CharDetailViewModel,
+    vewModel: EditCharViewModel,
     charId: String
 ) {
     LaunchedEffect(charId) {
-        charDetailViewModel.setCharId(charId)
+        vewModel.setCharId(charId)
     }
 
-    val viewState = charDetailViewModel.viewState.collectAsState()
+    val viewState = vewModel.viewState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -68,18 +66,18 @@ fun EditCharScreen(
         ) {
             TextField(
                 value = viewState.value.character?.Name ?: "",
-                onValueChange = { charDetailViewModel.updateCharacterName(it) },
+                onValueChange = { vewModel.updateCharacterName(it) },
                 label = { Text("Name") }
             )
             TextField(
                 value = viewState.value.character?.Lvl?.toString() ?: "0",
-                onValueChange = { charDetailViewModel.updateCharacterLevel(it.toIntOrNull() ?: 0) },
+                onValueChange = { vewModel.updateCharacterLevel(it.toIntOrNull() ?: 0) },
                 label = { Text("Level") },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
             TextField(
                 value = viewState.value.character?.DC?.toString() ?: "0",
-                onValueChange = { charDetailViewModel.updateCharacterDC(it.toIntOrNull() ?: 0) },
+                onValueChange = { vewModel.updateCharacterDC(it.toIntOrNull() ?: 0) },
                 label = { Text("DC") },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
@@ -87,7 +85,7 @@ fun EditCharScreen(
                 value = viewState.value.character?.HP?.AktHp?.toString() ?: "0",
                 onValueChange = { newValue ->
                     val newAktHp = newValue.toIntOrNull() ?: 0
-                    charDetailViewModel.updateCharacterHp(
+                    vewModel.updateCharacterHp(
                         newAktHp,
                         viewState.value.character?.HP?.MaxHp ?: 0
                     )
@@ -100,7 +98,7 @@ fun EditCharScreen(
                 value = viewState.value.character?.HP?.MaxHp?.toString() ?: "0",
                 onValueChange = { newValue ->
                     val newMaxHp = newValue.toIntOrNull() ?: 0
-                    charDetailViewModel.updateCharacterHp(
+                    vewModel.updateCharacterHp(
                         viewState.value.character?.HP?.AktHp ?: 0,
                         newMaxHp
                     )
@@ -114,7 +112,7 @@ fun EditCharScreen(
                 value = viewState.value.character?.Mana?.AktMana?.toString() ?: "0",
                 onValueChange = { newValue ->
                     val newAktMana = newValue.toIntOrNull() ?: 0
-                    charDetailViewModel.updateCharacterMana(
+                    vewModel.updateCharacterMana(
                         newAktMana,
                         viewState.value.character?.Mana?.MaxMana ?: 0
                     )
@@ -127,7 +125,7 @@ fun EditCharScreen(
                 value = viewState.value.character?.Mana?.MaxMana?.toString() ?: "0",
                 onValueChange = { newValue ->
                     val newMaxMana = newValue.toIntOrNull() ?: 0
-                    charDetailViewModel.updateCharacterMana(
+                    vewModel.updateCharacterMana(
                         viewState.value.character?.Mana?.AktMana ?: 0, newMaxMana
                     )
                 },
@@ -137,7 +135,7 @@ fun EditCharScreen(
 
             Button(
                 onClick = {
-                    charDetailViewModel.updateCharacter(charId)
+                    vewModel.updateCharacter(charId)
                     navController?.navigateUp()
                     navController?.popBackStack()
                 },

@@ -11,12 +11,16 @@ import com.example.dnd_app.ui.screens.CharactersScreen
 import com.example.dnd_app.ui.screens.EditCharScreen
 import com.example.dnd_app.ui.screens.NewCharScreen
 import com.example.dnd_app.viewmodels.CharDetailViewModel
+import com.example.dnd_app.viewmodels.EditCharViewModel
+import com.example.dnd_app.viewmodels.NewCharViewModel
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
     charactersViewModel: CharactersViewModel,
-    charDetailViewModel: CharDetailViewModel
+    charDetailViewModel: CharDetailViewModel,
+    editCharViewModel: EditCharViewModel,
+    newCharViewModel: NewCharViewModel
 ){
     NavHost(
         navController = navController,
@@ -36,14 +40,14 @@ fun AppNavGraph(
         composable("NewCharScreen") {
             NewCharScreen(
                 navController = navController,
-                viewModel = charactersViewModel)
+                viewModel = newCharViewModel)
         }
 
         composable("EditCharScreen/{charId}") {backStackEntry ->
             val charId = backStackEntry.arguments?.getString("charId")?:""
             EditCharScreen(
                 navController = navController,
-                charDetailViewModel = charDetailViewModel,
+                vewModel = editCharViewModel,
                 charId)
         }
     }

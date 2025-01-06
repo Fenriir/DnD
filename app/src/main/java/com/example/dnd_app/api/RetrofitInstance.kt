@@ -25,10 +25,6 @@ object RetrofitInstance {
         retrofit.create(CharactersApi::class.java)
     }
 
-    val featyApi: FeatyApi by lazy{
-        retrofit.create(FeatyApi::class.java)
-    }
-
     val rasesApi: RasesApi by lazy{
         retrofit.create(RasesApi::class.java)
     }

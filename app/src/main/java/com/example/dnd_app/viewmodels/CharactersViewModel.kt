@@ -78,15 +78,4 @@ class CharactersViewModel : ViewModel(){
         }
     }
 
-    fun createCharacter(newCharacter: Characters) {
-        viewModelScope.launch {
-            try {
-                charactersRepository.postCharacter(newCharacter) // Volání API pro vytvoření nového charakteru
-                refreshCharacters() // Obnov seznam postav po přidání nového charakteru
-            } catch (e: Exception) {
-                Log.e("CharactersViewModel", "Error creating character: ${e.message}")
-                // Můžeš přidat další logiku pro zpracování chyb
-            }
-        }
-    }
 }

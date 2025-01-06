@@ -27,12 +27,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import com.example.dnd_app.viewmodels.NewCharViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCharScreen(
     navController: NavController?,
-    viewModel: CharactersViewModel
+    viewModel: NewCharViewModel
 ) {
     var charId by remember { mutableStateOf("") }
     var charName by remember { mutableStateOf("") }
