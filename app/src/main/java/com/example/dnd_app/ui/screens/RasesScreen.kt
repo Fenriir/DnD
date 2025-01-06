@@ -36,13 +36,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.dnd_app.viewmodels.CharactersViewModel
+import com.example.dnd_app.viewmodels.RasesViewModel
 import org.w3c.dom.Text
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharactersScreen(
+fun RasesScreen(
     navController: NavController?,
-    viewModel: CharactersViewModel
+    viewModel: RasesViewModel
 ) {
     val viewState = viewModel.viewState.collectAsState()
     val focusManager = LocalFocusManager.current
@@ -52,7 +53,7 @@ fun CharactersScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Char"
+                        text = "Rasy"
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors().copy(
@@ -86,17 +87,17 @@ fun CharactersScreen(
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Search,
-                       // keyboardType = KeyboardType.Number
+                        // keyboardType = KeyboardType.Number
                     ),
                     keyboardActions = KeyboardActions(
                         onSearch = {
-                            viewModel.searchCharacters()
+                            viewModel.searchRases()
                             focusManager.clearFocus()
                         }
                     )
                 )
                 IconButton(onClick = {
-                    viewModel.searchCharacters()
+                    viewModel.searchRases()
                     focusManager.clearFocus()
                 }) {
                     Icon(Icons.Default.Search, contentDescription = "Search")
@@ -112,24 +113,23 @@ fun CharactersScreen(
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
-                items(viewState.value.charactersList){ character ->
+                items(viewState.value.racesList){ race ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 6.dp)
                             .clickable {
-                                navController?.navigate("CharDetailScreen/${character.CharId}")
+                                navController?.navigate("CharDetailScreen/${race.RaceId}")
                             }
                     ) {
                         Text(
-                            text = character.Name,
+                            text = race.Name,
                             modifier = Modifier.padding(16.dp)
                         )
                     }
 
                 }
             }
-            Text("statický text", modifier = Modifier.fillMaxSize().weight(1f))
         }
     }
 }
@@ -137,7 +137,7 @@ fun CharactersScreen(
 
 @Composable
 @Preview
-fun CharactersScreenPreview(){
-    CharactersScreen( navController = null,
-        viewModel = CharactersViewModel())
+fun RasesScreenPreview(){
+    RasesScreen( navController = null,
+        viewModel = RasesViewModel())
 }

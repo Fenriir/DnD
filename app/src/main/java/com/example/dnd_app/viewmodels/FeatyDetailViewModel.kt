@@ -4,41 +4,40 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dnd_app.api.RetrofitInstance
-import com.example.dnd_app.models.Characters
 import com.example.dnd_app.repositries.CharactersRepository
-import com.example.dnd_app.ui.screens.CharDetailScreen
+import com.example.dnd_app.repositries.FeatyRepository
 import com.example.dnd_app.viewstates.CharDetailViewState
+import com.example.dnd_app.viewstates.FeatyDetailViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CharDetailViewModel : ViewModel(){
-    private val charactersRepository = CharactersRepository(RetrofitInstance.charactersApi)
+class FeatyDetailViewModel : ViewModel(){
+    private val featyRepository = FeatyRepository(RetrofitInstance.featyApi)
 
-    private val _viewState = MutableStateFlow(CharDetailViewState())
+    private val _viewState = MutableStateFlow(FeatyDetailViewState())
     val viewState = _viewState.asStateFlow()
 
     private fun initLoad(){
-        fetchCharDetail()
+        fetchFeatDetail()
     }
 
-    private fun fetchCharDetail(){
+    private fun fetchFeatDetail(){
         viewModelScope.launch {
             _viewState.value = _viewState.value.copy(isLoading = true)
             try {
-                val character = charactersRepository.getCharacter(_viewState.value.charId)
-                _viewState.update{it.copy(character = character)}
+                val featy = featyRepository.getFeat(_viewState.value.featsId)
+                _viewState.update{it.copy(featy = featy)}
             } catch (e: Exception) {
-                Log.e("CharDetailViewModel", "fetchCharDetail: ${e.message}")
+                Log.e("FeatDetailViewModel", "fetchFeatDetail: ${e.message}")
             }
             _viewState.value = _viewState.value.copy(isLoading = false)
         }
     }
 
-    fun setCharId(charId: String) {
-        _viewState.update { it.copy(charId = charId) }
+    fun setFeatId(featsId: String) {
+        _viewState.update { it.copy(featsId = featsId) }
         initLoad()
     }
-
 }

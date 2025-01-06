@@ -1,7 +1,5 @@
 package com.example.dnd_app.models
 
-import java.util.Dictionary
-
 
 data class Characters(
     val Id: String,
