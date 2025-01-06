@@ -6,5 +6,6 @@ data class CharDetailViewState (
     val isLoading: Boolean = false,
     val search: String = "",
     val charId: String="",
+    val raceId: String="",
     val character: Characters? = null
 )

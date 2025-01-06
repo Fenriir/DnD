@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -24,19 +25,17 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.dnd_app.viewmodels.CharactersViewModel
-import org.w3c.dom.Text
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,6 +45,10 @@ fun CharactersScreen(
 ) {
     val viewState = viewModel.viewState.collectAsState()
     val focusManager = LocalFocusManager.current
+
+    LaunchedEffect (Unit) {
+        viewModel.refreshCharacters()
+    }
 
     Scaffold (
         topBar = {
@@ -61,7 +64,6 @@ fun CharactersScreen(
             )
         },
         bottomBar = {
-
         }
     ){ innerPadding ->
         Column (
@@ -129,7 +131,18 @@ fun CharactersScreen(
 
                 }
             }
-            Text("statický text", modifier = Modifier.fillMaxSize().weight(1f))
+//            Text("statický text", modifier = Modifier.fillMaxSize().weight(1f))
+            Button(
+                onClick = {
+                    // Navigace na obrazovku pro vytvoření nového charakteru
+                    navController?.navigate("NewCharScreen")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp) // Přidání paddingu kolem tlačítka
+            ) {
+                Text(text = "New Character") // Text tlačítka
+            }
         }
     }
 }

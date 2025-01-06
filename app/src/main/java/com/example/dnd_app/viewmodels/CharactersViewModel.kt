@@ -38,6 +38,10 @@ class CharactersViewModel : ViewModel(){
         }
     }
 
+    fun refreshCharacters() {
+        fetchCharacters()
+    }
+
     fun onSearchChange(query:String){
         _viewState.update { it.copy(search = query) }
     }

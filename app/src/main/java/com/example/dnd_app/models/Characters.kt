@@ -8,7 +8,7 @@ data class Characters(
     val Lvl: Int, // Level
     val HP: HP, // Health Points
     val DC: Int, // Difficulty Class
-    val Rasa: String, // Race
+    val RaceId: String, // Race
     val Mana: Mana // Mana points
 )
 
