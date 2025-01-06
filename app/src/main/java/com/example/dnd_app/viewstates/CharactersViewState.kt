@@ -7,7 +7,5 @@ import kotlinx.coroutines.flow.emptyFlow
 data class CharactersViewState (
     val isLoading: Boolean = false,
     val charactersList: List<Characters> = emptyList(),
-
- //   val snackbarMessage: Flow<String> = emptyFlow(),
     val search: String = ""
 )

@@ -46,7 +46,7 @@ fun CharactersScreen(
     val viewState = viewModel.viewState.collectAsState()
     val focusManager = LocalFocusManager.current
 
-    LaunchedEffect (Unit) {
+    LaunchedEffect(navController?.currentBackStackEntry) {
         viewModel.refreshCharacters()
     }
 
@@ -55,7 +55,10 @@ fun CharactersScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Char"
+                        text = "Postavy",
+                        modifier = Modifier.clickable {
+                            viewModel.refreshCharacters()
+                        }
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors().copy(
@@ -79,16 +82,13 @@ fun CharactersScreen(
                 TextField(
                     modifier = Modifier.weight(1f).padding(vertical = 2.dp),
                     value = viewState.value.search,
-                    label = {
-                        Text("Search")
-                    },
+                    label = { Text("Search") },
                     maxLines = 1,
                     onValueChange = {
                         viewModel.onSearchChange(it)
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Search,
-                       // keyboardType = KeyboardType.Number
                     ),
                     keyboardActions = KeyboardActions(
                         onSearch = {

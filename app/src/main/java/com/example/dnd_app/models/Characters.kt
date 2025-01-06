@@ -4,21 +4,21 @@ package com.example.dnd_app.models
 data class Characters(
     val Id: String,
     val CharId: String, // Character ID
-    val Name: String, // Character Name
-    val Lvl: Int, // Level
-    val HP: HP, // Health Points
-    val DC: Int, // Difficulty Class
-    val RaceId: String, // Race
-    val Mana: Mana // Mana points
+    var Name: String, // Character Name
+    var Lvl: Int, // Level
+    var HP: HP, // Health Points
+    var DC: Int, // Difficulty Class
+    var RaceId: String, // Race
+    var Mana: Mana // Mana points
 )
 
 data class HP(
-    val AktHp: Int, // Current HP
-    val MaxHp: Int // Maximum HP
+    var AktHp: Int, // Current HP
+    var MaxHp: Int // Maximum HP
 )
 
 data class Mana(
-    val AktMana: Int, // Current Mana
-    val MaxMana: Int // Maximum Mana
+    var AktMana: Int, // Current Mana
+    var MaxMana: Int // Maximum Mana
 )
 

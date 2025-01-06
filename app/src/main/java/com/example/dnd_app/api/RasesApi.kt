@@ -13,7 +13,7 @@ interface RasesApi {
     @GET
     suspend fun getRaces(): List<Race>
 
-    @GET("{raceId}")
+    @GET("Rases/{raceId}")
     suspend fun getRace(@Path("raceId") raceId: String): Race
 
     @GET("Name/{name}")

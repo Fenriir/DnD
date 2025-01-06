@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -19,10 +20,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.dnd_app.models.Race
 import com.example.dnd_app.ui.components.NavBackButton
 import com.example.dnd_app.viewmodels.CharDetailViewModel
 
@@ -39,6 +45,8 @@ fun CharDetailScreen(
 
     val viewState = charDetailViewModel.viewState.collectAsState()
 
+    var showDialog by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -53,10 +61,8 @@ fun CharDetailScreen(
                     )
                 },
                 actions = {
-                    // Přidání tlačítka Edit
                     TextButton(onClick = {
-                        // Logika pro spuštění editace charakteru
-//                        navController?.navigate("EditCharacterScreen/${charId}")
+                        navController?.navigate("EditCharScreen/${charId}")
                     }) {
                         Text(text = "Edit", color = MaterialTheme.colorScheme.primary) // Nastavení barvy textu
                     }
@@ -91,9 +97,27 @@ fun CharDetailScreen(
                         value = viewState.value.character?.DC?.toString() ?: "8")
                 }
                 item {
-                    CharacterInfoCard(
-                        label = "Rasa: ",
-                        value = viewState.value.character?.RaceId ?: "neznámá")
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            // Titulek pro kartu rasy
+                            Text(text = "Rasa", style = MaterialTheme.typography.bodyLarge)
+
+                            // Základní informace o rase
+                            Text(text = "Název: ${viewState.value.race?.Name}", style = MaterialTheme.typography.bodyMedium)
+
+                            Text(text = "Subraces:", style = MaterialTheme.typography.bodySmall)
+                            viewState.value.race?.Subrases?.forEach { subrace ->
+                                Text(text = "- ${subrace.name}: ${subrace.popis}", style = MaterialTheme.typography.bodyMedium)
+                            }
+                        }
+                    }
                 }
                 item {
                     CharacterHpCard(
@@ -108,21 +132,50 @@ fun CharDetailScreen(
                     )
                 }
             }
+            if (showDialog) {
+                ConfirmDeleteDialog(
+                    onConfirm = {
+                        charDetailViewModel.deleteCharacter(charId)
+                        navController?.navigateUp() // Návrat na předchozí obrazovku po smazání
+                    },
+                    onDismiss = { showDialog = false }
+                )
+            }
+
             Button(
-                onClick = {
-                    // Zde implementace logiky pro delete
-//                    charDetailViewModel.deleteCharacter(charId) // Předpokládáme, že máte metodu deleteCharacter v ViewModelu
-                    navController?.navigateUp() // Návrat na předchozí obrazovku po smazání
-                },
+                onClick = { showDialog = true },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp) // Padding kolem tlačítka
+                    .padding(16.dp)
             ) {
-                Text(text = "Delete Character")
+                Text("Delete Character")
             }
         }
 
     }
+}
+
+
+@Composable
+fun ConfirmDeleteDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Confirm Delete") },
+        text = { Text("Are you sure you want to delete this character?") },
+        confirmButton = {
+            TextButton(onClick = {
+                onConfirm()
+                onDismiss()
+            }) {
+                Text("Delete")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
 }
 
 @Composable
