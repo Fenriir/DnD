@@ -59,4 +59,11 @@ class CharactersRepository(private val charactersApi: CharactersApi) {
         Log.i("CharactersRepository", "deleteCharacter for id $charId")
         return result
     }
+
+    suspend fun searchCharacter(name: String): List<Characters> {
+        val character = charactersApi.searchCharacter(name)
+        Log.i("CharactersRepository", "search: $character")
+        return character
+    }
+
 }

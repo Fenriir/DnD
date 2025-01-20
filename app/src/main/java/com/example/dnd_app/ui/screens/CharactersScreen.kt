@@ -84,8 +84,8 @@ fun CharactersScreen(
                     value = viewState.value.search,
                     label = { Text("Search") },
                     maxLines = 1,
-                    onValueChange = {
-                        viewModel.onSearchChange(it)
+                    onValueChange = { query ->
+                        viewModel.onSearchChange(query)
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Search,
@@ -104,6 +104,7 @@ fun CharactersScreen(
                     Icon(Icons.Default.Search, contentDescription = "Search")
                 }
             }
+            //CREATE A TEXT FIELD HERE WITH A SAVE BUTTON
             LazyColumn (
                 modifier = Modifier.fillMaxSize().weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -131,7 +132,6 @@ fun CharactersScreen(
 
                 }
             }
-//            Text("statický text", modifier = Modifier.fillMaxSize().weight(1f))
             Button(
                 onClick = {
                     // Navigace na obrazovku pro vytvoření nového charakteru

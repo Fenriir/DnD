@@ -36,4 +36,7 @@ interface CharactersApi {
     @DELETE("Character/{charId}")
     suspend fun deleteCharacter(@Path("charId") charId: String): Unit
 
+    @GET("Character/search/{name}")
+    suspend fun searchCharacter(@Path("name") name: String): List<Characters>
+
 }
