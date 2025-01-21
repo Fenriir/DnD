@@ -30,6 +30,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,8 +46,10 @@ fun CharactersScreen(
 ) {
     val viewState = viewModel.viewState.collectAsState()
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
 
     LaunchedEffect(navController?.currentBackStackEntry) {
+        viewModel.setMemoryContext(context)
         viewModel.refreshCharacters()
     }
 
@@ -104,7 +107,6 @@ fun CharactersScreen(
                     Icon(Icons.Default.Search, contentDescription = "Search")
                 }
             }
-            //CREATE A TEXT FIELD HERE WITH A SAVE BUTTON
             LazyColumn (
                 modifier = Modifier.fillMaxSize().weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp)

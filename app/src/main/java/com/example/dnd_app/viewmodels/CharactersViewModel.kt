@@ -1,11 +1,13 @@
 package com.example.dnd_app.viewmodels
 
+import android.app.Application
 import android.content.SharedPreferences
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dnd_app.api.RetrofitInstance
+import com.example.dnd_app.controllers.MemoryManager
 import com.example.dnd_app.models.Characters
 import com.example.dnd_app.repositries.CharactersRepository
 import com.example.dnd_app.viewstates.CharactersViewState
@@ -16,12 +18,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CharactersViewModel  : ViewModel() {
+class CharactersViewModel: ViewModel() {
     private val charactersRepository = CharactersRepository(RetrofitInstance.charactersApi)
+    private val memoryManager = MemoryManager()
 
     private val _viewState = MutableStateFlow(CharactersViewState())
     val viewState: StateFlow<CharactersViewState> = _viewState.asStateFlow()
-
 
     private var originalCharacterList: List<Characters> = emptyList()
 
@@ -45,6 +47,7 @@ class CharactersViewModel  : ViewModel() {
             try {
                 val charactersList = charactersRepository.getCharacters()
                 _viewState.update { it.copy(charactersList = charactersList) }
+                memoryManager.saveCharacterList("characters", charactersList)
             } catch (e: Exception) {
                 Log.e("CharactersViewModel", "fetchCharacters: ${e.message}")
             }
@@ -52,43 +55,20 @@ class CharactersViewModel  : ViewModel() {
         }
     }
 
+    fun setMemoryContext(context: Context) {
+        memoryManager.setContext(context)
+    }
+
     fun refreshCharacters() {
+        memoryManager.loadCharacterList("characters")?.let { characters ->
+            _viewState.update { it.copy(charactersList = characters) }
+        }
         fetchCharacters()
     }
 
     fun onSearchChange(query: String) {
         _viewState.update { it.copy(search = query) }
     }
-
-    fun searchCharacter(name: String) {
-        viewModelScope.launch {
-            _viewState.update { it.copy(isLoading = true) } // Nastavení stavu načítání
-            try {
-                val searchResults =
-                    charactersRepository.searchCharacter(name) // Volání metody pro vyhledávání
-                _viewState.update {
-                    it.copy(
-                        charactersList = searchResults,
-                        isLoading = false
-                    )
-                } // Aktualizace stavu s výsledky
-            } catch (e: Exception) {
-                Log.e("CharactersViewModel", "searchCharacter: ${e.message}") // Logování chyby
-                _viewState.update { it.copy(isLoading = false) } // Zastavení načítání
-            }
-        }
-    }
-
-//    fun searchCharacter(name: String) {
-//        viewModelScope.launch {
-//            try {
-//                val characters = charactersRepository.searchCharacter(name)
-//                _viewState.update { it.copy(charactersList = characters, isLoading = false) }
-//            } catch (e: Exception) {
-//                Log.e("CharactersViewModel", "Error searching character: ${e.message}")
-//            }
-//        }
-//    }
 
     fun searchCharacters() {
         val currentSearch = _viewState.value.search.lowercase()
@@ -104,9 +84,8 @@ class CharactersViewModel  : ViewModel() {
                 // _viewState.update { it.copy(charactersList = originalCharacterList) }
             }
         } else {
-//            _viewState.update { it.copy(charactersList = originalCharacterList) }
+            // _viewState.update { it.copy(charactersList = originalCharacterList) }
         }
-
     }
 
 }
